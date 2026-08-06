@@ -4,7 +4,12 @@ Proyecto para aprender **LangChain + LangGraph** de forma progresiva y práctica
 Cada archivo es una lección autocontenida, corta y muy comentada (en español).
 Objetivo: entender los conceptos ejecutando código real, no leyendo teoría.
 
+> ⚡ **¿Solo quieres lo esencial?** Lee [`CHEATSHEET.md`](CHEATSHEET.md) — todos
+> los conceptos que importan en 1 página, en 10 minutos.
+
 ## Ruta de aprendizaje
+
+**Núcleo (01–05)** — esto es el 90% de lo que se usa en la vida real:
 
 | # | Archivo | Concepto clave |
 |---|---------|----------------|
@@ -13,10 +18,16 @@ Objetivo: entender los conceptos ejecutando código real, no leyendo teoría.
 | 03 | `03_langgraph_estado.py` | StateGraph: estado, nodos y edges |
 | 04 | `04_langgraph_condicional.py` | Edges condicionales (routers) |
 | 05 | `05_langgraph_agente.py` | Agente ReAct con tools en un grafo |
+
+**Opcional (06–07)** — útil saber que existe, no esencial para empezar:
+
+| # | Archivo | Concepto clave |
+|---|---------|----------------|
 | 06 | `06_langgraph_memoria.py` | Checkpoints, threads y memoria |
 | 07 | `07_langgraph_humano.py` | Human-in-the-loop (interrupt) |
 
 Regla de oro: **ejecuta cada lección, rompe cosas, modifícala**. Se aprende en 20 min por archivo.
+Los ejercicios 🧠 del final de cada lección son **opcionales** — hazlos solo si quieres profundizar.
 
 ## Setup
 

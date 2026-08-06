@@ -279,14 +279,15 @@
 <script>
 const RAW = 'https://raw.githubusercontent.com/rayperatta/langgraph-lab/master/';
 const LESSONS = [
-  { id: 'README.md', title: 'Inicio', sub: 'Qué es esto y cómo empezar', home: true },
+  { id: 'README.md', title: 'Inicio', sub: 'Qué es esto y cómo empezar', home: true, icon: '⌂' },
+  { id: 'CHEATSHEET.md', title: 'Cheat Sheet ⚡', sub: 'Todo lo esencial en 1 página', md: true, icon: '⚡' },
   { id: '01_langchain_basico.py', num: '01', title: 'LangChain básico', sub: 'LLM, prompts y chains LCEL', tags: ['LLM', 'LCEL'] },
   { id: '02_langchain_tools.py', num: '02', title: 'Tools', sub: 'El modelo pide, tu código ejecuta', tags: ['@tool', 'bind_tools'] },
   { id: '03_langgraph_estado.py', num: '03', title: 'Estado en LangGraph', sub: 'StateGraph: nodos y edges', tags: ['StateGraph', 'Grafos'] },
   { id: '04_langgraph_condicional.py', num: '04', title: 'Edges condicionales', sub: 'Routers: la base de todo agente', tags: ['Routers', 'Reducers'] },
   { id: '05_langgraph_agente.py', num: '05', title: 'Agente ReAct', sub: 'El bucle llm ⇄ tools', tags: ['ReAct', 'ToolNode'] },
-  { id: '06_langgraph_memoria.py', num: '06', title: 'Memoria', sub: 'Checkpoints y threads', tags: ['Checkpointer', 'Threads'] },
-  { id: '07_langgraph_humano.py', num: '07', title: 'Human-in-the-loop', sub: 'interrupt() + Command(resume)', tags: ['HITL', 'Supervisión'] },
+  { id: '06_langgraph_memoria.py', num: '06', title: 'Memoria', sub: 'Checkpoints y threads · opcional', tags: ['Checkpointer', 'Threads'], optional: true },
+  { id: '07_langgraph_humano.py', num: '07', title: 'Human-in-the-loop', sub: 'interrupt() + resume · opcional', tags: ['HITL', 'Supervisión'], optional: true },
 ];
 const KEY = 'langgraph-lab-progress';
 const getDone = () => { try { return new Set(JSON.parse(localStorage.getItem(KEY)) || []); } catch { return new Set(); } };
@@ -303,14 +304,15 @@ function renderNav() {
     a.href = '#' + l.id;
     a.className = 'nav-item' + (done.has(l.id) ? ' done' : '');
     a.dataset.id = l.id;
-    a.innerHTML = `<div class="node">${done.has(l.id) ? '✓' : (l.home ? '⌂' : l.num)}</div>
-      <div class="nav-text"><b>${l.home ? '🏠 ' : ''}${l.title}</b><small>${l.sub}</small></div>`;
+    a.innerHTML = `<div class="node">${done.has(l.id) ? '✓' : (l.icon || l.num)}</div>
+      <div class="nav-text"><b>${l.home ? '🏠 ' : ''}${l.optional ? '🕶 ' : ''}${l.title}</b><small>${l.sub}</small></div>`;
     a.onclick = () => document.querySelector('aside').classList.remove('open');
     nav.appendChild(a);
   });
-  const n = LESSONS.filter(l => !l.home && done.has(l.id)).length;
-  document.getElementById('prog-text').textContent = `${n} / 7`;
-  document.getElementById('prog-fill').style.width = (n / 7 * 100) + '%';
+  const n = LESSONS.filter(l => l.num && done.has(l.id)).length;
+  const total = LESSONS.filter(l => l.num).length;
+  document.getElementById('prog-text').textContent = `${n} / ${total}`;
+  document.getElementById('prog-fill').style.width = (n / total * 100) + '%';
 }
 
 function lessonNavHTML(id) {
@@ -342,7 +344,12 @@ async function load(id, keepScroll) {
     const text = await res.text();
     const lesson = LESSONS.find(l => l.id === id);
 
-    if (lesson.home) {
+    if (lesson.md && !lesson.home) {
+      content.innerHTML = `<div class="fade-in">
+        <div class="glass-card md">${marked.parse(text)}</div>
+        ${lessonNavHTML(id)}
+      </div>`;
+    } else if (lesson.home) {
       content.innerHTML = `<div class="fade-in">
         <div class="hero">
           <div class="pill">⚗️ Ruta práctica · 7 lecciones</div>
