@@ -339,7 +339,7 @@ async function load(id, keepScroll) {
   document.querySelectorAll('.nav-item').forEach(a => a.classList.toggle('active', a.dataset.id === id));
   content.innerHTML = '<div class="loading">Cargando</div>';
   try {
-    const res = await fetch(RAW + id);
+    const res = await fetch(RAW + id + '?t=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
     const lesson = LESSONS.find(l => l.id === id);
